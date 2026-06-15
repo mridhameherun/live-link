@@ -1,1490 +1,1108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trade & Investment KwaZulu-Natal | One Stop Shop</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — Beyond the Horizon</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            kzn: {
-              orange: '#E87722',
-              'orange-deep': '#C85A0A',
-              'orange-glow': '#FF9B45',
-              'orange-ash': '#3D2810',
-              navy: '#0F1A2E',
-              'navy-mid': '#1A2744',
-              'navy-soft': '#243352',
-              sand: '#F5EDE3',
-              'sand-light': '#FAF7F3',
-              cream: '#FFF9F0',
-              charcoal: '#1C1C1C',
-              muted: '#7A7570',
-              warm: '#D4CBC0',
-            }
-          },
-          fontFamily: {
-            display: ['"Instrument Serif"', 'serif'],
-            grotesk: ['"Space Grotesk"', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  :root {
+    --bg-void: #03060d;
+    --bg-deep: #060a14;
+    --bg-surface: rgba(12, 18, 32, 0.7);
+    --text-primary: #e4e9f2;
+    --text-secondary: #6b7a94;
+    --text-ghost: #2e3a50;
+    --accent: #4f8ff7;
+    --accent-warm: #f7724f;
+    --accent-cyan: #22d3ee;
+    --border-dim: rgba(255,255,255,0.04);
+    --border-glow: rgba(79,143,247,0.18);
+    --glow: rgba(79,143,247,0.08);
+  }
 
-  <style>
-    :root {
-      --orange: #E87722;
-      --orange-deep: #C85A0A;
-      --orange-glow: #FF9B45;
-      --navy: #0F1A2E;
-      --navy-mid: #1A2744;
-      --sand: #F5EDE3;
-      --cream: #FFF9F0;
-      --charcoal: #1C1C1C;
-      --muted: #7A7570;
-      --warm: #D4CBC0;
-      --font-display: 'Instrument Serif', serif;
-      --font-body: 'Space Grotesk', sans-serif;
-      --ease: cubic-bezier(0.16, 1, 0.3, 1);
-    }
+  html { scroll-behavior: smooth; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body);
-      color: var(--charcoal);
-      background: var(--cream);
-      overflow-x: hidden;
-      cursor: none;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-void);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    cursor: none;
+  }
 
-    /* Custom cursor */
-    .cursor-dot {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--orange);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s var(--ease), opacity 0.15s ease;
-      mix-blend-mode: difference;
-    }
-    .cursor-ring {
-      position: fixed;
-      width: 40px; height: 40px;
-      border: 1.5px solid var(--orange);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.35s var(--ease), width 0.3s var(--ease), height 0.3s var(--ease), opacity 0.3s ease;
-      opacity: 0.6;
-    }
-    .cursor-ring.hover {
-      width: 64px; height: 64px;
-      border-color: var(--orange-glow);
-      opacity: 1;
-    }
-    @media (pointer: coarse) {
-      .cursor-dot, .cursor-ring { display: none; }
-      body { cursor: auto; }
-    }
+  /* ── CUSTOM CURSOR ── */
+  .cursor-glow {
+    position: fixed;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,143,247,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    will-change: left, top;
+  }
+  .cursor-dot {
+    position: fixed;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 12px rgba(79,143,247,0.5);
+    transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease;
+    will-change: left, top;
+  }
+  .cursor-dot.expanded {
+    width: 40px; height: 40px;
+    background: rgba(79,143,247,0.1);
+    border: 1px solid rgba(79,143,247,0.3);
+    box-shadow: 0 0 30px rgba(79,143,247,0.15);
+  }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--sand); }
-    ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 3px; }
+  /* ── NOISE TEXTURE ── */
+  .noise {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
 
-    /* Header */
-    .site-header {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 1000;
-      padding: 1.25rem 0;
-      transition: all 0.5s var(--ease);
-    }
-    .site-header.scrolled {
-      background: rgba(255, 249, 240, 0.92);
-      backdrop-filter: blur(20px) saturate(1.2);
-      padding: 0.75rem 0;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-    }
+  /* ── STAR FIELD ── */
+  .starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .star-layer {
+    position: absolute;
+    inset: -60%;
+    width: 220%;
+    height: 220%;
+  }
+  .star-layer-1 {
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 34% 62%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.4px 1.4px at 58% 12%, rgba(200,220,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 73% 38%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 89% 78%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 7% 85%, rgba(180,200,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 48% 48%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 95% 8%, rgba(255,255,255,0.45) 0%, transparent 100%);
+    background-size: 380px 380px, 450px 450px, 520px 520px, 300px 300px,
+                     400px 400px, 620px 620px, 340px 340px, 480px 480px;
+    animation: drift-a 200s linear infinite;
+    opacity: 0.7;
+  }
+  .star-layer-2 {
+    background-image:
+      radial-gradient(1px 1px at 20% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.2px 1.2px at 65% 20%, rgba(200,215,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 42% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.3px 1.3px at 15% 70%, rgba(220,230,255,0.35) 0%, transparent 100%);
+    background-size: 500px 500px, 420px 420px, 560px 560px, 380px 380px, 600px 600px;
+    animation: drift-b 140s linear infinite;
+    opacity: 0.4;
+  }
+  @keyframes drift-a { to { transform: translate(380px, 380px); } }
+  @keyframes drift-b { to { transform: translate(-420px, 300px); } }
 
-    .nav-link {
-      position: relative;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
-      transition: color 0.3s var(--ease);
-      padding: 6px 0;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%; height: 1.5px;
-      background: var(--orange);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.4s var(--ease);
-    }
-    .nav-link:hover { color: var(--orange); }
-    .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
-    .site-header.scrolled .nav-link { color: var(--charcoal); }
-    .site-header.scrolled .nav-link:hover { color: var(--orange); }
-    .site-header.scrolled .logo-mark { color: var(--navy); }
-    .site-header.scrolled .logo-sub { color: var(--muted); }
+  /* ── AMBIENT GLOW ── */
+  .ambient {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ambient-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(79,143,247,0.07) 0%, transparent 70%);
+    top: -15%; right: -10%;
+    animation: amb-pulse 14s ease-in-out infinite;
+  }
+  .ambient-2 {
+    width: 450px; height: 450px;
+    background: radial-gradient(circle, rgba(247,114,79,0.04) 0%, transparent 70%);
+    bottom: 10%; left: -8%;
+    animation: amb-pulse 18s ease-in-out infinite reverse;
+  }
+  @keyframes amb-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
 
-    .logo-mark { color: white; transition: color 0.5s var(--ease); }
-    .logo-sub { color: rgba(255,255,255,0.5); transition: color 0.5s var(--ease); }
+  /* ── SCANLINES (very subtle) ── */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 8999;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.015) 2px,
+      rgba(0,0,0,0.015) 4px
+    );
+  }
 
-    /* Mobile menu */
-    .mobile-menu {
-      position: fixed; inset: 0;
-      background: var(--cream);
-      z-index: 1100;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.5s var(--ease);
-    }
-    .mobile-menu.open { opacity: 1; pointer-events: all; }
-    .mobile-menu .mob-link {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 6vw, 4rem);
-      color: var(--navy);
-      text-decoration: none;
-      line-height: 1.3;
-      transition: color 0.3s ease, transform 0.4s var(--ease);
-      transform: translateY(30px);
-      opacity: 0;
-    }
-    .mobile-menu.open .mob-link {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    .mobile-menu.open .mob-link:nth-child(1) { transition-delay: 0.1s; }
-    .mobile-menu.open .mob-link:nth-child(2) { transition-delay: 0.15s; }
-    .mobile-menu.open .mob-link:nth-child(3) { transition-delay: 0.2s; }
-    .mobile-menu.open .mob-link:nth-child(4) { transition-delay: 0.25s; }
-    .mobile-menu.open .mob-link:nth-child(5) { transition-delay: 0.3s; }
-    .mobile-menu.open .mob-link:nth-child(6) { transition-delay: 0.35s; }
-    .mob-link:hover { color: var(--orange); }
+  /* ── CONTENT ── */
+  .content { position: relative; z-index: 1; }
 
-    /* Hero */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      overflow: hidden;
-    }
-    @media (max-width: 1024px) {
-      .hero { grid-template-columns: 1fr; }
-    }
+  /* ── NAV ── */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 100;
+    background: transparent;
+    transition: all 0.4s ease;
+  }
+  .nav.scrolled {
+    background: rgba(3,6,13,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+  .nav-mark {
+    width: 28px; height: 28px;
+    position: relative;
+  }
+  .nav-mark svg { width: 100%; height: 100%; }
+  .nav-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  .nav-link {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-ghost);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .nav-link:hover { color: var(--text-primary); }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
 
-    .hero-left {
-      position: relative;
-      display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 8rem 4rem 4rem;
-      background: var(--navy);
-      z-index: 2;
-    }
-    @media (max-width: 1024px) {
-      .hero-left { padding: 7rem 1.5rem 3rem; min-height: 70vh; }
-    }
-    .hero-left::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 120px;
-      background: linear-gradient(90deg, transparent, var(--navy));
-      z-index: 3;
-      display: block;
-    }
-    @media (max-width: 1024px) {
-      .hero-left::after {
-        top: auto; bottom: 0; left: 0; right: 0;
-        width: 100%; height: 120px;
-        background: linear-gradient(to top, var(--navy), transparent);
-      }
-    }
+  .nav-btn {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bg-void);
+    background: var(--text-primary);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    cursor: none;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+  }
+  .nav-btn:hover {
+    background: var(--accent);
+    box-shadow: 0 0 30px rgba(79,143,247,0.25);
+  }
 
-    {
-      transition: all 0.5s var(--ease);
-    }
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 48px;
+    position: relative;
+  }
 
-    .hero-right {
-      position: relative;
-    }
-    @media (max-width: 1024px) {
-      .hero-right { min-height: 50vh; order: -1; }
-    }
-    .hero-right img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 8s var(--ease);
-    }
-    .hero:hover .hero-right img { transform: scale(1.06); }
-    .hero-right::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(232,119,34,0.15), transparent 60%);
-    }
+  .hero-left {
+    padding-right: 60px;
+    position: relative;
+  }
 
-    /* Hero decorative line */
-    .hero-line {
-      position: absolute;
-      width: 1px; height: 0;
-      background: linear-gradient(to bottom, var(--orange), transparent);
-      z-index: 4;
-      animation: heroLineGrow 2s 0.8s var(--ease) forwards;
-    }
-    @keyframes heroLineGrow {
-      to { height: 200px; }
-    }
+  .hero-coords {
+    position: absolute;
+    top: -20px; left: 0;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-ghost);
+    font-variant-numeric: tabular-nums;
+    opacity: 0;
+    animation: fade-up 0.6s ease-out 0.2s forwards;
+  }
 
-    /* Hero badge */
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 0.5rem 1.2rem;
-      border: 1px solid rgba(232,119,34,0.35);
-      border-radius: 100px;
-      color: var(--orange-glow);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      backdrop-filter: blur(8px);
-      background: rgba(232,119,34,0.06);
-      margin-bottom: 2rem;
-      opacity: 0; transform: translateY(20px);
-      animation: fadeUp 0.8s 0.3s var(--ease) forwards;
-    }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fade-up 0.6s ease-out 0.4s forwards;
+  }
+  .eyebrow-line {
+    width: 32px; height: 1px;
+    background: var(--accent);
+  }
+  .eyebrow-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
 
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 5vw, 4.5rem);
-      color: white;
-      line-height: 1.05;
-      margin-bottom: 1.5rem;
-      opacity: 0; transform: translateY(40px);
-      animation: fadeUp 1s 0.5s var(--ease) forwards;
-    }
-    .hero-title .accent {
-      color: var(--orange);
-      font-style: italic;
-    }
+  .hero h1 {
+    font-size: clamp(42px, 5.5vw, 76px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fade-up 0.8s ease-out 0.6s forwards;
+  }
+  .hero h1 .line {
+    display: block;
+  }
+  .hero h1 .thin {
+    font-weight: 200;
+    color: var(--text-secondary);
+  }
+  .hero h1 .accent-word {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: italic;
+    font-weight: 700;
+  }
 
-    .hero-desc {
-      color: rgba(255,255,255,0.55);
-      font-size: 1rem;
-      line-height: 1.75;
-      max-width: 440px;
-      margin-bottom: 2.5rem;
-      opacity: 0; transform: translateY(30px);
-      animation: fadeUp 0.8s 0.7s var(--ease) forwards;
-    }
+  .hero-desc {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 440px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fade-up 0.8s ease-out 0.8s forwards;
+  }
 
-    .hero-actions {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-      opacity: 0; transform: translateY(20px);
-      animation: fadeUp 0.8s 0.9s var(--ease) forwards;
-    }
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    opacity: 0;
+    animation: fade-up 0.8s ease-out 1s forwards;
+  }
+  .btn-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 36px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bg-void);
+    background: var(--text-primary);
+    border: none;
+    border-radius: 4px;
+    cursor: none;
+    text-decoration: none;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cyan) 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .btn-main:hover::before { opacity: 1; }
+  .btn-main:hover {
+    box-shadow: 0 0 50px rgba(79,143,247,0.25);
+    transform: translateY(-2px);
+  }
+  .btn-main span, .btn-main i { position: relative; z-index: 1; }
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+  .btn-subtle {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-ghost);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: none;
+  }
+  .btn-subtle:hover { color: var(--text-secondary); }
 
-    /* Floating stat on hero image */
-    .hero-float {
-      position: absolute;
-      bottom: 2rem; left: -3rem;
-      background: white;
-      border-radius: 16px;
-      padding: 1.25rem 1.5rem;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      z-index: 5;
-      opacity: 0; transform: translateY(20px) scale(0.95);
-      animation: fadeUp 0.8s 1.2s var(--ease) forwards;
-    }
-    @media (max-width: 1024px) {
-      .hero-float { left: 1.5rem; bottom: -2.5rem; }
-    }
+  /* ── HERO RIGHT — ABSTRACT VISUAL ── */
+  .hero-right {
+    position: relative;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fade-up 1s ease-out 0.8s forwards;
+  }
 
-    /* Buttons */
-    .btn-fire {
-      position: relative;
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 1rem 2rem;
-      background: var(--orange);
-      color: white;
-      border: none; border-radius: 100px;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      cursor: none;
-      overflow: hidden;
-      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
-    }
-    .btn-fire::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent 50%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .btn-fire:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 40px rgba(232, 119, 34, 0.4);
-    }
-    .btn-fire:hover::before { opacity: 1; }
+  .orbit-system {
+    position: relative;
+    width: 380px; height: 380px;
+  }
+  .orbit-ring {
+    position: absolute;
+    border: 1px solid var(--border-dim);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .orbit-ring-1 { width: 100%; height: 100%; animation: orbit-spin 30s linear infinite; }
+  .orbit-ring-2 {
+    width: 70%; height: 70%;
+    border-color: rgba(79,143,247,0.08);
+    animation: orbit-spin 22s linear infinite reverse;
+  }
+  .orbit-ring-3 {
+    width: 40%; height: 40%;
+    border-color: rgba(79,143,247,0.12);
+    animation: orbit-spin 15s linear infinite;
+  }
 
-    .btn-ghost {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 1rem 2rem;
-      background: transparent;
-      color: rgba(255,255,255,0.7);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 100px;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      cursor: none;
-      transition: all 0.4s var(--ease);
-      text-decoration: none;
-    }
-    .btn-ghost:hover {
-      color: var(--orange);
-      border-color: var(--orange);
-      background: rgba(232,119,34,0.06);
-      transform: translateY(-2px);
-    }
+  .orbit-ring-1::before, .orbit-ring-2::before, .orbit-ring-3::before {
+    content: '';
+    position: absolute;
+    top: -3px; left: 50%;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 16px rgba(79,143,247,0.6);
+    transform: translateX(-50%);
+  }
+  .orbit-ring-2::before {
+    width: 4px; height: 4px;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 12px rgba(34,211,238,0.5);
+    top: -2px;
+  }
+  .orbit-ring-3::before {
+    width: 3px; height: 3px;
+    background: var(--accent-warm);
+    box-shadow: 0 0 10px rgba(247,114,79,0.5);
+    top: -1.5px;
+  }
 
-    .btn-dark {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 1rem 2rem;
-      background: var(--navy);
-      color: white;
-      border: none; border-radius: 100px;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: none;
-      transition: all 0.4s var(--ease);
-    }
-    .btn-dark:hover {
-      background: var(--orange);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(232,119,34,0.3);
-    }
+  @keyframes orbit-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-    /* Section label */
-    .s-label {
-      display: inline-flex; align-items: center; gap: 0.75rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 1.25rem;
-    }
-    .s-label .line {
-      width: 32px; height: 1.5px;
-      background: var(--orange);
-    }
+  .orbit-core {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px; height: 60px;
+  }
+  .orbit-core svg { width: 100%; height: 100%; filter: drop-shadow(0 0 40px rgba(79,143,247,0.25)); }
 
-    .s-title {
-      font-family: var(--font-display);
-      color: var(--navy);
-      line-height: 1.1;
-    }
+  /* Crosshair decorations */
+  .crosshair {
+    position: absolute;
+    width: 24px; height: 24px;
+    opacity: 0.15;
+  }
+  .crosshair::before, .crosshair::after {
+    content: '';
+    position: absolute;
+    background: var(--accent);
+  }
+  .crosshair::before { width: 1px; height: 100%; left: 50%; top: 0; }
+  .crosshair::after { height: 1px; width: 100%; top: 50%; left: 0; }
+  .crosshair-1 { top: 8%; right: 12%; }
+  .crosshair-2 { bottom: 15%; left: 8%; }
+  .crosshair-3 { top: 55%; right: 4%; }
 
-    /* Marquee */
-    .marquee-wrap {
-      overflow: hidden;
-      white-space: nowrap;
-      border-top: 1px solid var(--warm);
-      border-bottom: 1px solid var(--warm);
-      padding: 1rem 0;
-      background: var(--sand);
-    }
-    .marquee-track {
-      display: inline-flex;
-      animation: marquee 30s linear infinite;
-    }
-    .marquee-track span {
-      font-family: var(--font-display);
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      color: var(--warm);
-      padding: 0 2rem;
-      -webkit-text-stroke: 1px var(--warm);
-      transition: color 0.3s ease;
-    }
-    .marquee-track span:hover {
-      color: var(--orange);
-      -webkit-text-stroke-color: var(--orange);
-    }
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+  /* Corner brackets */
+  .bracket {
+    position: absolute;
+    width: 20px; height: 20px;
+    opacity: 0.1;
+  }
+  .bracket::before, .bracket::after {
+    content: '';
+    position: absolute;
+    background: var(--text-primary);
+  }
+  .bracket-tl::before { width: 100%; height: 1px; top: 0; left: 0; }
+  .bracket-tl::after { width: 1px; height: 100%; top: 0; left: 0; }
+  .bracket-br::before { width: 100%; height: 1px; bottom: 0; right: 0; }
+  .bracket-br::after { width: 1px; height: 100%; bottom: 0; right: 0; }
+  .bracket-1 { top: 5%; left: 5%; }
+  .bracket-2 { bottom: 5%; right: 5%; }
 
-    /* Sector cards — Bento grid */
-    .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: auto;
-      gap: 1rem;
-    }
-    @media (max-width: 1024px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 640px) { .bento-grid { grid-template-columns: 1fr; } }
+  /* ── TICKER MARQUEE ── */
+  .ticker-wrap {
+    border-top: 1px solid var(--border-dim);
+    border-bottom: 1px solid var(--border-dim);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  .ticker-wrap::before, .ticker-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ticker-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg-void), transparent); }
+  .ticker-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg-void), transparent); }
 
-    .bento-card {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      cursor: none;
-      transition: transform 0.5s var(--ease);
-    }
-    .bento-card:hover { transform: scale(0.98); }
-    .bento-card.tall { grid-row: span 2; }
-    .bento-card.wide { grid-column: span 2; }
-    @media (max-width: 640px) {
-      .bento-card.tall, .bento-card.wide { grid-row: auto; grid-column: auto; }
-    }
+  .ticker {
+    display: inline-flex;
+    animation: ticker-scroll 40s linear infinite;
+  }
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 32px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-ghost);
+  }
+  .ticker-dot {
+    width: 4px; height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .ticker-item .highlight { color: var(--text-secondary); }
 
-    .bento-card img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s var(--ease), filter 0.5s ease;
-      filter: brightness(0.55) saturate(0.9);
-    }
-    .bento-card:hover img {
-      transform: scale(1.08);
-      filter: brightness(0.4) saturate(0.7);
-    }
-    .bento-card .bento-content {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.75rem;
-      z-index: 2;
-    }
-    .bento-card .bento-num {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      color: rgba(255,255,255,0.08);
-      position: absolute;
-      top: 1rem; right: 1.25rem;
-      line-height: 1;
-      transition: color 0.4s ease;
-    }
-    .bento-card:hover .bento-num { color: rgba(232,119,34,0.2); }
-    .bento-card .bento-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      background: rgba(232,119,34,0.15);
-      backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 0.75rem;
-      color: var(--orange-glow);
-      transition: transform 0.4s var(--ease), background 0.3s ease;
-    }
-    .bento-card:hover .bento-icon {
-      transform: translateX(4px);
-      background: rgba(232,119,34,0.25);
-    }
-    .bento-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      color: white;
-      line-height: 1.2;
-      margin-bottom: 0.4rem;
-    }
-    .bento-card p {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.5;
-      max-width: 280px;
-    }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 
-    /* Priorities — editorial layout */
-    .priority-row {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 2rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--warm);
-      transition: all 0.4s var(--ease);
-      cursor: none;
-    }
-    .priority-row:first-child { border-top: 1px solid var(--warm); }
-    .priority-row:hover {
-      padding-left: 1rem;
-      border-color: var(--orange);
-    }
-    .priority-row .p-num {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      color: var(--warm);
-      line-height: 1;
-      transition: color 0.3s ease;
-    }
-    .priority-row:hover .p-num { color: var(--orange); }
+  /* ── CAPABILITIES — ASYMMETRIC LAYOUT ── */
+  .capabilities {
+    padding: 140px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .cap-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+    align-items: end;
+  }
+  .cap-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-glow);
+  }
+  .cap-header h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  .cap-header h2 .muted { color: var(--text-ghost); font-weight: 300; }
 
-    /* Advantages — offset cards */
-    .adv-card {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      height: 320px;
-      cursor: none;
-    }
-    @media (max-width: 640px) { .adv-card { height: 240px; } }
-    .adv-card img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 1s var(--ease);
-    }
-    .adv-card:hover img { transform: scale(1.1); }
-    .adv-card .adv-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(15,26,46,0.95) 0%, rgba(15,26,46,0.2) 60%, transparent);
-      transition: background 0.5s ease;
-    }
-    .adv-card:hover .adv-overlay {
-      background: linear-gradient(to top, rgba(200,90,10,0.9) 0%, rgba(200,90,10,0.2) 60%, transparent);
-    }
-    .adv-card .adv-text {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 2rem;
-      color: white;
-      transform: translateY(8px);
-      transition: transform 0.5s var(--ease);
-    }
-    .adv-card:hover .adv-text { transform: translateY(0); }
-    .adv-card .adv-arrow {
-      position: absolute; top: 1.5rem; right: 1.5rem;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center;
-      color: white;
-      opacity: 0;
-      transform: translate(-8px, 8px);
-      transition: all 0.4s var(--ease);
-    }
-    .adv-card:hover .adv-arrow {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1px;
+    background: var(--border-dim);
+  }
+  .cap-card {
+    background: var(--bg-void);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+  }
+  .cap-card-1 { grid-column: span 5; }
+  .cap-card-2 { grid-column: span 4; }
+  .cap-card-3 { grid-column: span 3; }
+  .cap-card-4 { grid-column: span 3; }
+  .cap-card-5 { grid-column: span 5; }
+  .cap-card-6 { grid-column: span 4; }
 
-    /* Stats — creative layout */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: rgba(255,255,255,0.06);
-    }
-    @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-    .stat-cell {
-      background: var(--navy);
-      padding: 3rem 1.5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-cell::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(232,119,34,0.06), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    .stat-cell:hover::before { opacity: 1; }
-    .stat-val {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      color: var(--orange);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .stat-txt {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.45);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 500;
-    }
+  .cap-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(79,143,247,0.03) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .cap-card:hover::before { opacity: 1; }
+  .cap-card:hover { background: rgba(8,12,22,0.9); }
 
-    /* Events — timeline */
-    .event-item {
-      display: grid;
-      grid-template-columns: 70px 1fr auto;
-      gap: 1.5rem;
-      align-items: center;
-      padding: 1.5rem 0;
-      border-bottom: 1px solid rgba(212,203,192,0.5);
-      transition: all 0.3s var(--ease);
-      cursor: none;
-    }
-    .event-item:hover { padding-left: 1rem; }
-    .event-item .e-day {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      color: var(--orange);
-      line-height: 1;
-    }
-    .event-item .e-month {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .event-item .e-arrow {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      border: 1px solid var(--warm);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted);
-      transition: all 0.3s var(--ease);
-      flex-shrink: 0;
-    }
-    .event-item:hover .e-arrow {
-      background: var(--orange);
-      border-color: var(--orange);
-      color: white;
-    }
-    @media (max-width: 640px) {
-      .event-item { grid-template-columns: 60px 1fr; }
-      .event-item .e-arrow { display: none; }
-    }
+  .cap-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--text-ghost);
+    margin-bottom: 28px;
+    font-variant-numeric: tabular-nums;
+  }
+  .cap-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+  .cap-card p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 320px;
+  }
+  .cap-icon {
+    position: absolute;
+    bottom: 24px; right: 24px;
+    color: var(--text-ghost);
+    opacity: 0.3;
+    transition: all 0.5s ease;
+  }
+  .cap-card:hover .cap-icon {
+    opacity: 0.6;
+    color: var(--accent);
+  }
 
-    /* CTA section */
-    .cta-block {
-      position: relative;
-      background: var(--navy);
-      overflow: hidden;
-    }
-    .cta-block::before {
-      content: '';
-      position: absolute;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,119,34,0.12), transparent 70%);
-      top: -200px; right: -100px;
-    }
-    .cta-block .cta-glow {
-      position: absolute;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,119,34,0.08), transparent 70%);
-      bottom: -150px; left: 10%;
-    }
+  /* ── BIG NUMBER SECTION ── */
+  .big-nums {
+    padding: 100px 48px 120px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .big-nums-left {}
+  .big-nums-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .big-nums-left p {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 420px;
+  }
 
-    /* Footer */
-    .site-footer { background: var(--charcoal); color: rgba(255,255,255,0.4); }
-    .footer-link {
-      color: rgba(255,255,255,0.4);
-      text-decoration: none;
-      transition: color 0.3s ease;
-      font-size: 0.85rem;
-    }
-    .footer-link:hover { color: var(--orange); }
+  .big-nums-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .big-num-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .big-num-row:first-child { border-top: 1px solid var(--border-dim); }
+  .big-num {
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-variant-numeric: tabular-nums;
+  }
+  .big-num-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-ghost);
+    text-align: right;
+  }
 
-    /* Scroll to top */
-    .scroll-top {
-      position: fixed; bottom: 2rem; right: 2rem;
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      background: var(--navy);
-      color: var(--orange);
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid rgba(232,119,34,0.2);
-      cursor: none;
-      z-index: 900;
-      opacity: 0; transform: translateY(20px);
-      transition: all 0.4s var(--ease);
-    }
-    .scroll-top.visible { opacity: 1; transform: translateY(0); }
-    .scroll-top:hover {
-      background: var(--orange);
-      color: white;
-      border-color: var(--orange);
-      transform: translateY(-3px);
-    }
+  /* ── DIAGONAL DIVIDER ── */
+  .diag-divider {
+    height: 120px;
+    background: var(--bg-void);
+    clip-path: polygon(0 0, 100% 30%, 100% 100%, 0 70%);
+    border-top: 1px solid var(--border-dim);
+    position: relative;
+    margin: 0 -1px;
+  }
 
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 2rem; left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--navy);
-      color: white;
-      padding: 0.875rem 1.75rem;
-      border-radius: 100px;
-      font-size: 0.85rem;
-      z-index: 2000;
-      opacity: 0;
-      transition: all 0.5s var(--ease);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-      display: flex; align-items: center; gap: 0.5rem;
-      border: 1px solid rgba(232,119,34,0.2);
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  /* ── CTA ── */
+  .cta-section {
+    padding: 140px 48px;
+    text-align: center;
+    position: relative;
+    background: var(--bg-deep);
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,143,247,0.06) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .cta-section .cap-label { margin-bottom: 24px; }
+  .cta-section h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .cta-section h2 .thin { font-weight: 200; color: var(--text-secondary); }
+  .cta-section p {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 400px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    position: relative;
+  }
+  .cta-section .btn-main { position: relative; }
 
-    /* Noise texture overlay */
-    .noise {
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 9990;
-      opacity: 0.025;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 128px 128px;
-    }
+  /* ── FOOTER ── */
+  .footer {
+    padding: 40px 48px;
+    border-top: 1px solid var(--border-dim);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .footer-left {
+    font-size: 11px;
+    color: var(--text-ghost);
+    letter-spacing: 0.04em;
+  }
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 11px;
+    color: var(--text-ghost);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover { color: var(--text-secondary); }
 
-    /* Reveal text animation */
-    .reveal-text {
-      overflow: hidden;
-      display: inline-block;
-    }
-    .reveal-text span {
-      display: inline-block;
-      transform: translateY(105%);
-      transition: transform 0.8s var(--ease);
-    }
-    .reveal-text.revealed span { transform: translateY(0); }
+  /* ── ANIMATIONS ── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-      .hero-right img { transition: none !important; }
-      .marquee-track { animation: none !important; }
-      .cursor-dot, .cursor-ring { display: none; }
-      body { cursor: auto; }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; padding: 120px 32px 80px; }
+    .hero-left { padding-right: 0; }
+    .hero-right { display: none; }
+    .cap-card-1, .cap-card-2, .cap-card-3,
+    .cap-card-4, .cap-card-5, .cap-card-6 {
+      grid-column: span 6;
     }
-  </style>
+    .big-nums { grid-template-columns: 1fr; gap: 48px; }
+    .capabilities, .cta-section { padding-left: 32px; padding-right: 32px; }
+    .big-nums { padding-left: 32px; padding-right: 32px; }
+  }
+  @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor-glow, .cursor-dot { display: none; }
+    .nav { padding: 0 20px; }
+    .nav-right { display: none; }
+    .hero { padding: 100px 20px 60px; }
+    .hero-cta-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .cap-header { grid-template-columns: 1fr; gap: 20px; }
+    .cap-card-1, .cap-card-2, .cap-card-3,
+    .cap-card-4, .cap-card-5, .cap-card-6 {
+      grid-column: span 12;
+    }
+    .capabilities, .cta-section, .big-nums { padding-left: 20px; padding-right: 20px; }
+    .footer { flex-direction: column; gap: 16px; padding: 32px 20px; text-align: center; }
+    .diag-divider { height: 60px; clip-path: polygon(0 20%, 100% 50%, 100% 80%, 0 50%); }
+    .big-num { font-size: 40px !important; }
+  }
+</style>
 </head>
-
 <body>
-  <!-- Noise overlay -->
-  <div class="noise" aria-hidden="true"></div>
 
-  <!-- Custom cursor -->
-  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<!-- CUSTOM CURSOR -->
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-dot" id="cursorDot"></div>
 
-  <!-- Header -->
-  <header class="site-header" id="siteHeader" role="banner">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-3 no-underline" aria-label="TIKZN Home">
-        <div class="w-10 h-10 rounded-xl bg-kzn-orange flex items-center justify-center">
-          <span class="text-white font-bold font-display text-lg">T</span>
-        </div>
-        <div>
-          <div class="logo-mark text-sm font-bold tracking-wide leading-none">TIKZN</div>
-          <div class="logo-sub text-[0.65rem] font-medium tracking-wider uppercase leading-none mt-0.5">Trade & Investment KZN</div>
-        </div>
-      </a>
+<!-- LAYERS -->
+<div class="noise" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<div class="starfield" aria-hidden="true">
+  <div class="star-layer star-layer-1"></div>
+  <div class="star-layer star-layer-2"></div>
+</div>
+<div class="ambient ambient-1" aria-hidden="true"></div>
+<div class="ambient ambient-2" aria-hidden="true"></div>
 
-      <nav class="hidden lg:flex items-center gap-8" role="navigation" aria-label="Main navigation">
-        <a href="#sectors" class="nav-link">Sectors</a>
-        <a href="#priorities" class="nav-link">Priorities</a>
-        <a href="#advantages" class="nav-link">Advantages</a>
-        <a href="#events" class="nav-link">Events</a>
-        <a href="#contact" class="nav-link">Contact</a>
-        <a href="#contact" class="btn-fire text-xs py-2.5 px-5 ml-2">
-          Invest Now
-          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-        </a>
-      </nav>
+<!-- CONTENT -->
+<div class="content">
 
-      <button class="lg:hidden p-2" id="menuToggle" aria-label="Open menu" aria-expanded="false">
-        <div class="space-y-1.5" id="hamburger">
-          <span class="block w-6 h-0.5 bg-white transition-all duration-300 origin-center" id="ham1"></span>
-          <span class="block w-4 h-0.5 bg-white transition-all duration-300 ml-auto" id="ham2"></span>
-        </div>
-      </button>
-    </div>
-  </header>
-
-  <!-- Mobile Menu (fullscreen) -->
-  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
-    <button class="absolute top-6 right-6 p-2" id="menuClose" aria-label="Close menu">
-      <i data-lucide="x" class="w-7 h-7" style="color:var(--navy)"></i>
-    </button>
-    <nav class="flex flex-col items-center gap-2" role="navigation">
-      <a href="#sectors" class="mob-link">Sectors</a>
-      <a href="#priorities" class="mob-link">Priorities</a>
-      <a href="#advantages" class="mob-link">Advantages</a>
-      <a href="#events" class="mob-link">Events</a>
-      <a href="#contact" class="mob-link">Contact</a>
-    </nav>
-    <div class="absolute bottom-10 left-0 right-0 text-center">
-      <p class="text-xs tracking-wider uppercase" style="color:var(--muted)">+27 31 362 0800</p>
-    </div>
-  </div>
-
-  <!-- ===== HERO ===== -->
-  <section class="hero" id="hero" aria-label="Hero">
-    <div class="hero-left">
-      <div class="hero-line" style="top: 6rem; right: -60px;" aria-hidden="true"></div>
-      <div class="hero-badge">
-        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-        One Stop Shop
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo">
+      <div class="nav-mark">
+        <svg viewBox="0 0 28 28" fill="none">
+          <path d="M14 2L25 8.5V19.5L14 26L3 19.5V8.5L14 2Z" stroke="url(#ng)" stroke-width="1.2" fill="none"/>
+          <circle cx="14" cy="14" r="3.5" stroke="url(#ng)" stroke-width="0.8" fill="none"/>
+          <circle cx="14" cy="14" r="1" fill="#4f8ff7"/>
+          <defs><linearGradient id="ng" x1="3" y1="2" x2="25" y2="26"><stop stop-color="#4f8ff7"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+        </svg>
       </div>
-      <h1 class="hero-title">
-        Invest in the<br><span class="accent">Future</span> of<br>KwaZulu-Natal
+      <span class="nav-name">Nexus</span>
+    </a>
+    <div class="nav-right">
+      <a href="#capabilities" class="nav-link">Capabilities</a>
+      <a href="#metrics" class="nav-link">Metrics</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#contact" class="nav-btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-coords">47.3752° N — 8.5392° E</div>
+      <div class="hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        <span class="eyebrow-text">Systems Online</span>
+      </div>
+      <h1>
+        <span class="line">We build</span>
+        <span class="line"><em class="accent-word">infrastructure</em></span>
+        <span class="line thin">that outlasts</span>
+        <span class="line">the hype.</span>
       </h1>
       <p class="hero-desc">
-        Your gateway to one of Africa's most dynamic investment destinations. Strategic ports, skilled labour, and sector opportunities that deliver returns.
+        Foundational systems for organizations that refuse to
+        compromise on reliability, precision, or scale.
       </p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-fire">
-          Start Your Journey
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      <div class="hero-cta-row">
+        <a href="#contact" class="btn-main">
+          <span>Begin Engagement</span>
+          <i data-lucide="arrow-right" style="width:15px;height:15px;"></i>
         </a>
-        <a href="#sectors" class="btn-ghost">
-          Explore Sectors
+        <a href="#capabilities" class="btn-subtle">
+          Explore capabilities
+          <i data-lucide="arrow-down" style="width:13px;height:13px;"></i>
         </a>
       </div>
     </div>
+
     <div class="hero-right">
-      <img src="https://picsum.photos/seed/kzn-durban-skyline-2024/960/1080.jpg"
-           alt="Durban skyline and harbour"
-           loading="eager">
-      <div class="hero-float">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:rgba(232,119,34,0.1)">
-            <i data-lucide="trending-up" class="w-5 h-5" style="color:var(--orange)"></i>
-          </div>
-          <div>
-            <div class="font-display text-2xl" style="color:var(--navy)">R 2.4B</div>
-            <div class="text-[0.65rem] font-medium" style="color:var(--muted)">Investment Facilitated</div>
-          </div>
+      <div class="orbit-system">
+        <div class="orbit-ring orbit-ring-1"></div>
+        <div class="orbit-ring orbit-ring-2"></div>
+        <div class="orbit-ring orbit-ring-3"></div>
+        <div class="orbit-core">
+          <svg viewBox="0 0 60 60" fill="none">
+            <path d="M30 8L50 19V41L30 52L10 41V19L30 8Z" stroke="url(#og)" stroke-width="0.8" fill="none"/>
+            <circle cx="30" cy="30" r="8" stroke="url(#og)" stroke-width="0.6" fill="none"/>
+            <circle cx="30" cy="30" r="2.5" fill="url(#og)" opacity="0.7"/>
+            <defs><linearGradient id="og" x1="10" y1="8" x2="50" y2="52"><stop stop-color="#4f8ff7"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+          </svg>
         </div>
       </div>
+      <div class="crosshair crosshair-1"></div>
+      <div class="crosshair crosshair-2"></div>
+      <div class="crosshair crosshair-3"></div>
+      <div class="bracket bracket-tl bracket-1"></div>
+      <div class="bracket bracket-br bracket-2"></div>
     </div>
   </section>
 
-  <!-- ===== MARQUEE ===== -->
-  <div class="marquee-wrap" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Agriculture</span><span>&#x2022;</span>
-      <span>Manufacturing</span><span>&#x2022;</span>
-      <span>Tourism</span><span>&#x2022;</span>
-      <span>Energy</span><span>&#x2022;</span>
-      <span>Automotive</span><span>&#x2022;</span>
-      <span>ICT</span><span>&#x2022;</span>
-      <span>Logistics</span><span>&#x2022;</span>
-      <span>Healthcare</span><span>&#x2022;</span>
-      <span>Agriculture</span><span>&#x2022;</span>
-      <span>Manufacturing</span><span>&#x2022;</span>
-      <span>Tourism</span><span>&#x2022;</span>
-      <span>Energy</span><span>&#x2022;</span>
-      <span>Automotive</span><span>&#x2022;</span>
-      <span>ICT</span><span>&#x2022;</span>
-      <span>Logistics</span><span>&#x2022;</span>
-      <span>Healthcare</span><span>&#x2022;</span>
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span class="highlight">Edge Computing</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Distributed Systems<span class="ticker-dot"></span></span>
+      <span class="ticker-item"><span class="highlight">Zero-Trust Architecture</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Real-Time Processing<span class="ticker-dot"></span></span>
+      <span class="ticker-item"><span class="highlight">Global Infrastructure</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Platform Engineering<span class="ticker-dot"></span></span>
+      <span class="ticker-item"><span class="highlight">Observability at Scale</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Performance Optimization<span class="ticker-dot"></span></span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item"><span class="highlight">Edge Computing</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Distributed Systems<span class="ticker-dot"></span></span>
+      <span class="ticker-item"><span class="highlight">Zero-Trust Architecture</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Real-Time Processing<span class="ticker-dot"></span></span>
+      <span class="ticker-item"><span class="highlight">Global Infrastructure</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Platform Engineering<span class="ticker-dot"></span></span>
+      <span class="ticker-item"><span class="highlight">Observability at Scale</span><span class="ticker-dot"></span></span>
+      <span class="ticker-item">Performance Optimization<span class="ticker-dot"></span></span>
     </div>
   </div>
 
-  <!-- ===== KEY SECTORS — BENTO GRID ===== -->
-  <section class="py-24 lg:py-32 px-6 lg:px-10" id="sectors" aria-labelledby="sectors-title">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
-        <div>
-          <div class="s-label" data-aos="fade-right"><span class="line"></span> Key Sectors</div>
-          <h2 class="s-title text-4xl sm:text-5xl lg:text-6xl" id="sectors-title" data-aos="fade-right" data-aos-delay="100">
-            Driving Growth<br>Across Industries
-          </h2>
-        </div>
-        <p class="text-sm max-w-sm leading-relaxed" style="color:var(--muted)" data-aos="fade-left" data-aos-delay="200">
-          KZN offers diverse, high-potential sectors backed by world-class infrastructure and a strategic geographic position on the Indian Ocean.
-        </p>
+  <!-- CAPABILITIES -->
+  <section class="capabilities" id="capabilities">
+    <div class="cap-header reveal">
+      <div class="cap-label">001 — Capabilities</div>
+      <h2>What we<br><span class="muted">actually do.</span></h2>
+    </div>
+    <div class="cap-grid">
+      <div class="cap-card cap-card-1 reveal">
+        <div class="cap-num">01</div>
+        <h3>Core Systems<br>Architecture</h3>
+        <p>Resilient, modular infrastructure designed to scale from prototype to planet-spanning deployment without architectural debt.</p>
+        <div class="cap-icon"><i data-lucide="cpu" style="width:24px;height:24px;"></i></div>
       </div>
-
-      <div class="bento-grid" id="bentoGrid" style="min-height: 700px;">
-        <!-- Injected by JS -->
+      <div class="cap-card cap-card-2 reveal">
+        <div class="cap-num">02</div>
+        <h3>Zero-Trust<br>Security</h3>
+        <p>Defense-in-depth hardening at every layer. Built for environments where failure is not an option.</p>
+        <div class="cap-icon"><i data-lucide="shield-check" style="width:24px;height:24px;"></i></div>
+      </div>
+      <div class="cap-card cap-card-3 reveal">
+        <div class="cap-num">03</div>
+        <h3>Real-Time<br>Intelligence</h3>
+        <p>Decision systems that process signals at the speed of operations.</p>
+        <div class="cap-icon"><i data-lucide="activity" style="width:24px;height:24px;"></i></div>
+      </div>
+      <div class="cap-card cap-card-4 reveal">
+        <div class="cap-num">04</div>
+        <h3>Platform<br>Integration</h3>
+        <p>Connecting systems that were never designed to communicate.</p>
+        <div class="cap-icon"><i data-lucide="layers" style="width:24px;height:24px;"></i></div>
+      </div>
+      <div class="cap-card cap-card-5 reveal">
+        <div class="cap-num">05</div>
+        <h3>Performance<br>Engineering</h3>
+        <p>Sub-millisecond optimization at every layer. We don't ship fast — we ship invisible, where latency ceases to exist.</p>
+        <div class="cap-icon"><i data-lucide="zap" style="width:24px;height:24px;"></i></div>
+      </div>
+      <div class="cap-card cap-card-6 reveal">
+        <div class="cap-num">06</div>
+        <h3>Global Edge<br>Delivery</h3>
+        <p>Edge-first by design. Identical performance whether the user is in Tokyo or Toronto.</p>
+        <div class="cap-icon"><i data-lucide="globe" style="width:24px;height:24px;"></i></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== PRIORITIES — EDITORIAL ===== -->
-  <section class="py-24 lg:py-32 px-6 lg:px-10" style="background:var(--sand);" id="priorities" aria-labelledby="priorities-title">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid lg:grid-cols-5 gap-16">
-        <div class="lg:col-span-2">
-          <div class="s-label" data-aos="fade-right"><span class="line"></span> What Our Priorities</div>
-          <h2 class="s-title text-4xl sm:text-5xl mb-6" id="priorities-title" data-aos="fade-right" data-aos-delay="100">
-            Strategic Focus<br>for Impact
-          </h2>
-          <p class="text-sm leading-relaxed mb-8" style="color:var(--muted);" data-aos="fade-right" data-aos-delay="200">
-            Our priorities are designed to accelerate economic transformation, create sustainable jobs, and position KZN as Africa's leading investment hub.
-          </p>
-          <div data-aos="fade-right" data-aos-delay="300">
-            <img src="https://picsum.photos/seed/kzn-factory-workers-2024/500/600.jpg"
-                 alt="Workers in a KZN manufacturing facility"
-                 class="rounded-2xl w-full object-cover"
-                 style="max-height:400px;"
-                 loading="lazy">
-          </div>
-        </div>
-        <div class="lg:col-span-3" id="prioritiesList">
-          <!-- Injected by JS -->
-        </div>
+  <!-- BIG NUMBERS -->
+  <section class="big-nums" id="metrics">
+    <div class="big-nums-left reveal">
+      <div class="big-nums-label">002 — Performance</div>
+      <p>Numbers that matter. No vanity metrics — only the signals that indicate whether a system is truly built to endure.</p>
+    </div>
+    <div class="big-nums-stack">
+      <div class="big-num-row reveal">
+        <span class="big-num">99.99%</span>
+        <span class="big-num-label">Uptime SLA<br>Guaranteed</span>
+      </div>
+      <div class="big-num-row reveal">
+        <span class="big-num">&lt;12ms</span>
+        <span class="big-num-label">Global Avg<br>Latency</span>
+      </div>
+      <div class="big-num-row reveal">
+        <span class="big-num">47</span>
+        <span class="big-num-label">Edge<br>Regions</span>
+      </div>
+      <div class="big-num-row reveal">
+        <span class="big-num">2.4B+</span>
+        <span class="big-num-label">Events<br>Processed Daily</span>
       </div>
     </div>
   </section>
 
-  <!-- ===== ADVANTAGES — OFFSET GRID ===== -->
-  <section class="py-24 lg:py-32 px-6 lg:px-10" id="advantages" aria-labelledby="adv-title">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-16">
-        <div class="s-label justify-center" data-aos="fade-up"><span class="line"></span> Why KwaZulu-Natal</div>
-        <h2 class="s-title text-4xl sm:text-5xl lg:text-6xl" id="adv-title" data-aos="fade-up" data-aos-delay="100">
-          The KZN Advantage
-        </h2>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8" id="advantagesGrid">
-        <!-- Injected by JS — offset via nth-child -->
-      </div>
+  <!-- DIAGONAL DIVIDER -->
+  <div class="diag-divider" aria-hidden="true"></div>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="reveal">
+      <div class="cap-label" style="text-align:center;">003 — Contact</div>
     </div>
+    <h2 class="reveal">Let's build<br><span class="thin">something that</span><br>lasts.</h2>
+    <p class="reveal">
+      We engage with a limited number of partners at any given time.
+      If there's a fit, we'll make the time.
+    </p>
+    <a href="mailto:hello@nexus.dev" class="btn-main reveal">
+      <span>Reach Out</span>
+      <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
+    </a>
   </section>
 
-  <!-- ===== STATISTICS ===== -->
-  <section class="stats-grid" aria-label="Key statistics" id="statsSection">
-    <!-- Injected by JS -->
-  </section>
-
-  <!-- ===== EVENTS ===== -->
-  <section class="py-24 lg:py-32 px-6 lg:px-10" id="events" aria-labelledby="events-title">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid lg:grid-cols-5 gap-16">
-        <div class="lg:col-span-3">
-          <div class="s-label" data-aos="fade-right"><span class="line"></span> Projects & Events</div>
-          <h2 class="s-title text-4xl sm:text-5xl mb-8" id="events-title" data-aos="fade-right" data-aos-delay="100">
-            Upcoming Events
-          </h2>
-          <div id="eventsList">
-            <!-- Injected by JS -->
-          </div>
-        </div>
-        <div class="lg:col-span-2" data-aos="fade-left" data-aos-delay="200">
-          <div class="sticky top-28">
-            <div class="rounded-3xl overflow-hidden" style="background:var(--navy);">
-              <img src="https://picsum.photos/seed/kzn-conference-2025/600/320.jpg"
-                   alt="KZN Investment Conference"
-                   class="w-full h-48 object-cover opacity-70"
-                   loading="lazy">
-              <div class="p-7">
-                <div class="text-[0.65rem] font-bold tracking-widest uppercase mb-3" style="color:var(--orange);">Flagship Event</div>
-                <h3 class="font-display text-2xl text-white mb-3 leading-tight">KZN Investment Conference 2025</h3>
-                <p class="text-sm mb-5 leading-relaxed" style="color:rgba(255,255,255,0.5);">
-                  500+ investors, government officials, and industry leaders. Three days of deal-making in Durban.
-                </p>
-                <div class="flex items-center gap-5 text-xs mb-6" style="color:rgba(255,255,255,0.35);">
-                  <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Mar 15-17</span>
-                  <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Durban ICC</span>
-                </div>
-                <a href="#contact" class="btn-fire w-full justify-center text-xs py-3">
-                  Register Now
-                  <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CTA ===== -->
-  <section class="cta-block py-24 lg:py-32 px-6 lg:px-10" id="contact" aria-labelledby="cta-title">
-    <div class="cta-glow" aria-hidden="true"></div>
-    <div class="max-w-3xl mx-auto text-center relative z-10">
-      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white mb-5" id="cta-title" data-aos="fade-up">
-        Ready to Invest<br>in <span style="color:var(--orange); font-style:italic;">KZN</span>?
-      </h2>
-      <p class="text-sm mb-10 max-w-lg mx-auto leading-relaxed" style="color:rgba(255,255,255,0.45);" data-aos="fade-up" data-aos-delay="100">
-        Our dedicated team guides you through every step — from feasibility to post-investment support.
-      </p>
-
-      <form class="max-w-lg mx-auto" id="contactForm" data-aos="fade-up" data-aos-delay="200" novalidate>
-        <div class="grid sm:grid-cols-2 gap-3 mb-3">
-          <input type="text" name="name" placeholder="Full Name" required
-                 class="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-kzn-orange/50 transition"
-                 aria-label="Full name">
-          <input type="email" name="email" placeholder="Email" required
-                 class="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-kzn-orange/50 transition"
-                 aria-label="Email">
-        </div>
-        <select name="sector"
-                class="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white/40 text-sm focus:outline-none focus:border-kzn-orange/50 transition appearance-none mb-3 cursor-none"
-                aria-label="Sector">
-          <option value="" class="text-gray-800">Select Sector</option>
-          <option value="agriculture" class="text-gray-800">Agriculture & Agro-processing</option>
-          <option value="manufacturing" class="text-gray-800">Manufacturing</option>
-          <option value="tourism" class="text-gray-800">Tourism & Hospitality</option>
-          <option value="energy" class="text-gray-800">Energy & Green Economy</option>
-          <option value="ict" class="text-gray-800">ICT & Digital Economy</option>
-          <option value="automotive" class="text-gray-800">Automotive</option>
-        </select>
-        <textarea name="message" rows="3" placeholder="Your investment plans..."
-                  class="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-kzn-orange/50 transition resize-none mb-5"
-                  aria-label="Message"></textarea>
-        <button type="submit" class="btn-fire w-full justify-center py-4 text-sm">
-          Submit Inquiry
-          <i data-lucide="send" class="w-4 h-4"></i>
-        </button>
-        <div id="formMsg" class="mt-3 text-xs hidden"></div>
-      </form>
-
-      <div class="mt-10 flex flex-wrap justify-center gap-8 text-xs" style="color:rgba(255,255,255,0.3);" data-aos="fade-up" data-aos-delay="300">
-        <span class="flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5"></i> +27 31 362 0800</span>
-        <span class="flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5"></i> invest@tikzn.co.za</span>
-        <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Durban, KZN</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="site-footer pt-16 pb-8" role="contentinfo">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
-        <div>
-          <div class="flex items-center gap-3 mb-5">
-            <div class="w-10 h-10 rounded-xl bg-kzn-orange flex items-center justify-center">
-              <span class="text-white font-bold font-display text-lg">T</span>
-            </div>
-            <div>
-              <div class="text-white text-sm font-bold leading-none">TIKZN</div>
-              <div class="text-[0.6rem] tracking-wider uppercase leading-none mt-0.5 opacity-40">Trade & Investment KZN</div>
-            </div>
-          </div>
-          <p class="text-xs leading-relaxed mb-5 opacity-60">
-            The province's lead investment promotion and trade facilitation agency, connecting global capital with KZN opportunity.
-          </p>
-          <div class="flex gap-2.5">
-            <a href="#" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-kzn-orange" style="background:rgba(255,255,255,0.06);" aria-label="Facebook"><i data-lucide="facebook" class="w-3.5 h-3.5"></i></a>
-            <a href="#" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-kzn-orange" style="background:rgba(255,255,255,0.06);" aria-label="Twitter"><i data-lucide="twitter" class="w-3.5 h-3.5"></i></a>
-            <a href="#" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-kzn-orange" style="background:rgba(255,255,255,0.06);" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-3.5 h-3.5"></i></a>
-          </div>
-        </div>
-        <div>
-          <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Navigate</h3>
-          <ul class="space-y-2.5">
-            <li><a href="#sectors" class="footer-link">Key Sectors</a></li>
-            <li><a href="#priorities" class="footer-link">Priorities</a></li>
-            <li><a href="#advantages" class="footer-link">Why KZN</a></li>
-            <li><a href="#events" class="footer-link">Events</a></li>
-            <li><a href="#" class="footer-link">Newsroom</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Sectors</h3>
-          <ul class="space-y-2.5">
-            <li><a href="#" class="footer-link">Agriculture</a></li>
-            <li><a href="#" class="footer-link">Manufacturing</a></li>
-            <li><a href="#" class="footer-link">Tourism</a></li>
-            <li><a href="#" class="footer-link">Energy</a></li>
-            <li><a href="#" class="footer-link">Automotive</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Contact</h3>
-          <ul class="space-y-3.5">
-            <li class="flex items-start gap-2.5 text-xs leading-relaxed">
-              <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--orange)"></i>
-              Riverside Tower, 11th Floor<br>21 Umgeni Road, Durban 4001
-            </li>
-            <li class="flex items-center gap-2.5">
-              <i data-lucide="phone" class="w-3.5 h-3.5 flex-shrink-0" style="color:var(--orange)"></i>
-              <a href="tel:+27313620800" class="footer-link">+27 31 362 0800</a>
-            </li>
-            <li class="flex items-center gap-2.5">
-              <i data-lucide="mail" class="w-3.5 h-3.5 flex-shrink-0" style="color:var(--orange)"></i>
-              <a href="mailto:invest@tikzn.co.za" class="footer-link">invest@tikzn.co.za</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style="border-color:rgba(255,255,255,0.06);">
-        <p class="text-[0.65rem] opacity-30">&copy; 2025 Trade & Investment KwaZulu-Natal</p>
-        <div class="flex gap-5">
-          <a href="#" class="text-[0.65rem] opacity-30 hover:opacity-70 transition">Privacy</a>
-          <a href="#" class="text-[0.65rem] opacity-30 hover:opacity-70 transition">Terms</a>
-          <a href="#" class="text-[0.65rem] opacity-30 hover:opacity-70 transition">PAIA</a>
-        </div>
-      </div>
-    </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">&copy; 2025 Nexus Systems. All rights reserved.</div>
+    <ul class="footer-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Status</a></li>
+    </ul>
   </footer>
 
-  <!-- Scroll to top -->
-  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
-    <i data-lucide="chevron-up" class="w-5 h-5"></i>
-  </button>
+</div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+<script>
+  lucide.createIcons();
 
-  <script>
-    // ===== DATA — All 8 sector images now using real photos =====
-    const sectors = [
-      { 
-        icon: 'wheat', 
-        title: 'Agriculture & Agro-processing', 
-        desc: 'Sugar, subtropical fruits, timber with strong processing infrastructure.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/ed34d45a-5156-4a48-8e1f-690012334088.jpg?auth_key=1880991959-974d878283c94658a6bc49f70f14be82-0-dcd5614074cb6ad01d79e7aa0f8b82fc', 
-        cls: 'tall' 
-      },
-      { 
-        icon: 'factory', 
-        title: 'Manufacturing', 
-        desc: 'Chemicals, textiles, food processing, and fabricated metals.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/5fb16ad8-88f9-4d11-bf6e-0c3a1463d010.jpg?auth_key=1880992728-36608cba53f14ee3a1694e49bfe5cec6-0-394c394c4b318720d6e070c58584a165', 
-        cls: '' 
-      },
-      { 
-        icon: 'palmtree', 
-        title: 'Tourism & Hospitality', 
-        desc: 'World-class beaches, Drakensberg, and rich cultural heritage.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/660f9461-6803-483c-abf9-6786916f14cd.jpg?auth_key=1880992728-1618e99310414b7dab27fce8c5dc0929-0-d34bc6e8a44ea9c3ce4ed709145616ab', 
-        cls: '' 
-      },
-      { 
-        icon: 'zap', 
-        title: 'Energy & Green Economy', 
-        desc: 'Solar, wind, and biofuel projects driving sustainable growth.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/5a580747-b910-4e86-be61-3b1086380c1c.jpg?auth_key=1880991959-f681790c7109403c9b697944159b2ab1-0-c947aa3d17875343b1bed682c6ff0581', 
-        cls: 'wide' 
-      },
-      { 
-        icon: 'monitor-smartphone', 
-        title: 'ICT & Digital', 
-        desc: 'Emerging tech hub with digital infrastructure and talent.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/8cf4bfee-b1a1-437d-9296-5273250800b7.jpg?auth_key=1880991959-96fb1095542e4701ab3766fa85fedbfb-0-5b52f76f76b87c9aee7ccf0021d0d5cd', 
-        cls: '' 
-      },
-      { 
-        icon: 'car', 
-        title: 'Automotive', 
-        desc: 'Major OEMs with robust component supply chains.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/db7f0683-a6bb-4c7c-9012-b517f8192acb.jpg?auth_key=1880991959-4d8441bccd184ca5a43f6b5bab332780-0-3fe2336cee525e40c5fe4cc4b44326cf', 
-        cls: '' 
-      },
-      { 
-        icon: 'ship', 
-        title: 'Logistics & Maritime', 
-        desc: 'Africa\'s busiest port connecting to SADC markets.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/0f2bcbfc-8397-4524-a86e-f238361e008f.jpg?auth_key=1880991959-bce2e31d76ca4329aa3864715136a1b4-0-40c5e9142f5352884953a63d84500d7b', 
-        cls: '' 
-      },
-      { 
-        icon: 'stethoscope', 
-        title: 'Healthcare & Pharma', 
-        desc: 'Pharmaceutical manufacturing and medical tourism.', 
-        img: 'https://z-cdn-media.chatglm.cn/files/cf4890b1-7d8b-4723-9ec1-6ca40e04659a.jpg?auth_key=1880991959-ace7ae007ec44923a8712cd37ae04878-0-515c25f7d56f23b284cdc90c83c5781c', 
-        cls: 'wide' 
-      },
-    ];
+  // ── CUSTOM CURSOR ──
+  const glow = document.getElementById('cursorGlow');
+  const dot = document.getElementById('cursorDot');
+  let mx = 0, my = 0, gx = 0, gy = 0;
 
-    const priorities = [
-      { num: '01', title: 'Foreign Direct Investment Attraction', desc: 'Targeted campaigns to attract high-impact FDI into priority sectors with comprehensive aftercare support and incentive packaging.' },
-      { num: '02', title: 'Local Economic Development', desc: 'Empowering SMEs through capacity building, market access programmes, and integration into global supply chains.' },
-      { num: '03', title: 'Export Promotion & Market Access', desc: 'Facilitating market entry for KZN products into regional and international trade corridors and exhibitions.' },
-      { num: '04', title: 'Investment Facilitation', desc: 'Streamlining regulatory processes through our One Stop Shop to dramatically reduce time-to-commissioning.' },
-      { num: '05', title: 'Skills & Talent Pipeline', desc: 'Partnering with institutions to develop sector-specific skills aligned with investor requirements.' },
-    ];
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
 
-    const advantages = [
-      { img: 'kzn-port-aerial-view', title: 'Strategic Port Access', desc: 'Africa\'s largest port connecting to global shipping lanes and 300M+ consumers.' },
-      { img: 'kzn-skilled-workers-2024', title: 'Skilled Workforce', desc: '6.5 million people with strong technical, professional, and artisanal capabilities.' },
-      { img: 'kzn-africa-map-markets', title: 'Market Gateway', desc: 'Direct access to SADC region\'s combined 300 million consumers.' },
-      { img: 'kzn-highway-infrastructure', title: 'World-Class Infrastructure', desc: 'Modern roads, rail, airports, and industrial zones with reliable utilities.' },
-      { img: 'kzn-coast-nature-life', title: 'Quality of Life', desc: 'Subtropical climate, stunning coastline, and lower cost of living.' },
-      { img: 'kzn-business-handshake-deal', title: 'Pro-Business Environment', desc: 'Competitive incentives, SEZs, and dedicated investment facilitation.' },
-    ];
+  function animateCursor() {
+    gx += (mx - gx) * 0.08;
+    gy += (my - gy) * 0.08;
+    glow.style.left = gx + 'px';
+    glow.style.top = gy + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
 
-    const events = [
-      { day: '12', month: 'Feb', title: 'Agro-Processing Investment Summit', loc: 'Pietermaritzburg', tag: 'Agriculture' },
-      { day: '28', month: 'Feb', title: 'Automotive Supply Chain Forum', loc: 'Durban ICC', tag: 'Automotive' },
-      { day: '15', month: 'Mar', title: 'KZN Investment Conference 2025', loc: 'Durban ICC', tag: 'Flagship' },
-      { day: '03', month: 'Apr', title: 'Green Energy Investment Roundtable', loc: 'Ballito', tag: 'Energy' },
-      { day: '22', month: 'Apr', title: 'Tourism & Hospitality Expo', loc: 'Umhlanga', tag: 'Tourism' },
-    ];
+  // Expand cursor on interactive elements
+  document.querySelectorAll('a, button, .btn-main, .btn-subtle, .nav-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => dot.classList.add('expanded'));
+    el.addEventListener('mouseleave', () => dot.classList.remove('expanded'));
+  });
 
-    const stats = [
-      { val: 1000, suffix: '+', label: 'SMEs Empowered by TIKZN' },
-      { val: 2.4, suffix: 'B ZAR', label: 'Investment Facilitated' },
-      { val: 15000, suffix: '+', label: 'Jobs Created' },
-      { val: 45, suffix: '+', label: 'Countries Invested' },
-    ];
+  // ── NAV SCROLL ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
 
-    // ===== RENDER: Bento Grid =====
-    const bentoGrid = document.getElementById('bentoGrid');
-    sectors.forEach((s, i) => {
-      const card = document.createElement('div');
-      card.className = `bento-card ${s.cls}`;
-      card.style.minHeight = s.cls === 'tall' ? '340px' : '260px';
-      card.setAttribute('data-aos', 'fade-up');
-      card.setAttribute('data-aos-delay', String(i * 60));
-      card.innerHTML = `
-        <img src="${s.img}" alt="${s.title}" loading="lazy">
-        <div class="bento-num">${String(i + 1).padStart(2, '0')}</div>
-        <div class="bento-content">
-          <div class="bento-icon"><i data-lucide="${s.icon}" class="w-5 h-5"></i></div>
-          <h3>${s.title}</h3>
-          <p>${s.desc}</p>
-        </div>
-      `;
-      bentoGrid.appendChild(card);
-    });
-
-    // ===== RENDER: Priorities =====
-    const prioritiesList = document.getElementById('prioritiesList');
-    priorities.forEach((p, i) => {
-      const row = document.createElement('div');
-      row.className = 'priority-row';
-      row.setAttribute('data-aos', 'fade-left');
-      row.setAttribute('data-aos-delay', String(i * 80));
-      row.innerHTML = `
-        <div class="p-num">${p.num}</div>
-        <div>
-          <h3 class="font-semibold text-base mb-1.5" style="color:var(--navy)">${p.title}</h3>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">${p.desc}</p>
-        </div>
-      `;
-      prioritiesList.appendChild(row);
-    });
-
-    // ===== RENDER: Advantages (with staggered offset) =====
-    const advantagesGrid = document.getElementById('advantagesGrid');
-    advantages.forEach((a, i) => {
-      const card = document.createElement('div');
-      const offset = (i % 3 === 1) ? 'lg:mt-10' : '';
-      card.className = `adv-card ${offset}`;
-      card.setAttribute('data-aos', 'fade-up');
-      card.setAttribute('data-aos-delay', String(i * 80));
-      card.innerHTML = `
-        <img src="https://picsum.photos/seed/${a.img}/600/500.jpg" alt="${a.title}" loading="lazy">
-        <div class="adv-overlay"></div>
-        <div class="adv-arrow"><i data-lucide="arrow-up-right" class="w-4 h-4"></i></div>
-        <div class="adv-text">
-          <h3 class="font-display text-xl mb-1">${a.title}</h3>
-          <p class="text-sm opacity-70">${a.desc}</p>
-        </div>
-      `;
-      advantagesGrid.appendChild(card);
-    });
-
-    // ===== RENDER: Stats =====
-    const statsSection = document.getElementById('statsSection');
-    stats.forEach((s, i) => {
-      const cell = document.createElement('div');
-      cell.className = 'stat-cell';
-      cell.innerHTML = `
-        <div class="stat-val" data-target="${s.val}" data-suffix="${s.suffix}">0${s.suffix}</div>
-        <div class="stat-txt">${s.label}</div>
-      `;
-      statsSection.appendChild(cell);
-    });
-
-    // ===== RENDER: Events =====
-    const eventsList = document.getElementById('eventsList');
-    events.forEach((e, i) => {
-      const item = document.createElement('div');
-      item.className = 'event-item';
-      item.setAttribute('data-aos', 'fade-up');
-      item.setAttribute('data-aos-delay', String(i * 60));
-      const tagColor = e.tag === 'Flagship' ? 'var(--orange)' : 'var(--navy)';
-      item.innerHTML = `
-        <div>
-          <div class="e-day">${e.day}</div>
-          <div class="e-month">${e.month}</div>
-        </div>
-        <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-[0.6rem] font-bold px-2 py-0.5 rounded-full" style="background:${tagColor}0D; color:${tagColor};">${e.tag}</span>
-          </div>
-          <h3 class="font-semibold text-sm mb-0.5" style="color:var(--navy)">${e.title}</h3>
-          <span class="text-xs flex items-center gap-1" style="color:var(--muted)"><i data-lucide="map-pin" class="w-3 h-3"></i> ${e.loc}</span>
-        </div>
-        <div class="e-arrow"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></div>
-      `;
-      eventsList.appendChild(item);
-    });
-
-    // ===== INIT ICONS =====
-    lucide.createIcons();
-
-    // ===== INIT AOS =====
-    AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 60 });
-
-    // ===== CUSTOM CURSOR =====
-    const dot = document.getElementById('cursorDot');
-    const ring = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.left = mouseX - 4 + 'px';
-      dot.style.top = mouseY - 4 + 'px';
-    });
-
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.left = ringX - 20 + 'px';
-      ring.style.top = ringY - 20 + 'px';
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    // Hover state for interactive elements
-    const hoverTargets = 'a, button, .bento-card, .adv-card, .priority-row, .event-item, input, select, textarea';
-    document.querySelectorAll(hoverTargets).forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-    });
-    // Re-bind for dynamically added elements
-    const observer = new MutationObserver(() => {
-      document.querySelectorAll(hoverTargets).forEach(el => {
-        if (!el.dataset.cursorBound) {
-          el.dataset.cursorBound = '1';
-          el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-          el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-        }
-      });
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    // ===== HEADER SCROLL =====
-    const header = document.getElementById('siteHeader');
-    const ham1 = document.getElementById('ham1');
-    const ham2 = document.getElementById('ham2');
-    function onScroll() {
-      const scrolled = window.scrollY > 50;
-      header.classList.toggle('scrolled', scrolled);
-      if (ham1) ham1.style.background = scrolled ? 'var(--charcoal)' : 'white';
-      if (ham2) ham2.style.background = scrolled ? 'var(--charcoal)' : 'white';
-      document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 500);
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
-    // ===== MOBILE MENU =====
-    const mobileMenu = document.getElementById('mobileMenu');
-    document.getElementById('menuToggle').addEventListener('click', () => {
-      mobileMenu.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
-    document.getElementById('menuClose').addEventListener('click', closeMobile);
-    function closeMobile() {
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobile));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMobile(); });
-
-    // ===== SCROLL TOP =====
-    document.getElementById('scrollTop').addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // ===== COUNTER ANIMATION =====
-    const counterEls = document.querySelectorAll('.stat-val[data-target]');
-    const counterObs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const target = parseFloat(el.dataset.target);
-          const suffix = el.dataset.suffix || '';
-          const isDecimal = target % 1 !== 0;
-          const start = performance.now();
-          const dur = 2200;
-          function tick(now) {
-            const p = Math.min((now - start) / dur, 1);
-            const ease = 1 - Math.pow(1 - p, 4);
-            const v = target * ease;
-            el.textContent = (isDecimal ? v.toFixed(1) : Math.floor(v).toLocaleString()) + suffix;
-            if (p < 1) requestAnimationFrame(tick);
-          }
-          requestAnimationFrame(tick);
-          counterObs.unobserve(el);
-        }
-      });
-    }, { threshold: 0.3 });
-    counterEls.forEach(c => counterObs.observe(c));
-
-    // ===== TOAST =====
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4" style="color:var(--orange-glow)"></i> ${msg}`;
-      lucide.createIcons({ nodes: [t] });
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3500);
-    }
-
-    // ===== FORM =====
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const f = e.target;
-      const name = f.name.value.trim();
-      const email = f.email.value.trim();
-      const msg = document.getElementById('formMsg');
-
-      if (!name) {
-        msg.textContent = 'Please enter your name.'; msg.style.color = '#FF6B6B'; msg.classList.remove('hidden');
-        f.name.focus(); return;
+  // ── REVEAL ON SCROLL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Find sibling reveals for stagger
+        const parent = entry.target.parentElement;
+        const siblings = parent.querySelectorAll(':scope > .reveal');
+        let idx = 0;
+        siblings.forEach((s, i) => { if (s === entry.target) idx = i; });
+        setTimeout(() => entry.target.classList.add('active'), idx * 80);
+        obs.unobserve(entry.target);
       }
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        msg.textContent = 'Please enter a valid email.'; msg.style.color = '#FF6B6B'; msg.classList.remove('hidden');
-        f.email.focus(); return;
-      }
-
-      const btn = f.querySelector('button');
-      btn.disabled = true;
-      btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></span> Sending...';
-
-      setTimeout(() => {
-        f.reset();
-        btn.disabled = false;
-        btn.innerHTML = 'Submit Inquiry <i data-lucide="send" class="w-4 h-4"></i>';
-        lucide.createIcons({ nodes: [btn] });
-        msg.classList.add('hidden');
-        showToast('Thank you — our team will reach out within 24 hours.');
-      }, 1500);
     });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => obs.observe(el));
 
-    // ===== PARALLAX on hero image (subtle mouse follow) =====
-    const heroImg = document.querySelector('.hero-right img');
-    if (heroImg && window.innerWidth > 1024) {
-      document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 12;
-        const y = (e.clientY / window.innerHeight - 0.5) * 12;
-        heroImg.style.transform = `scale(1.03) translate(${x}px, ${y}px)`;
-      });
-    }
-  </script>
+  // ── PARALLAX ON ORBIT SYSTEM ──
+  const orbitSys = document.querySelector('.orbit-system');
+  if (orbitSys && window.innerWidth > 768) {
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      orbitSys.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  }
+
+  // ── PARALLAX ON AMBIENT GLOWS ──
+  document.querySelectorAll('.ambient').forEach((amb, i) => {
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - 0.5) * (i + 1) * 14;
+      const y = (e.clientY / window.innerHeight - 0.5) * (i + 1) * 14;
+      amb.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  });
+</script>
+
 </body>
 </html>
